@@ -1,120 +1,120 @@
-# Teste de Stroop - Versão Victoria
+# Teste de Stroop Victoria - Auto-Aplicado
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-Uma implementação digital fiel do Teste de Stroop na **Versão Victoria (Perret, 1974)**, desenvolvida em HTML5, JavaScript puro e CSS. Ferramenta profissional para avaliação neuropsicológica de atenção seletiva, controle inibitório e flexibilidade mental.
+Implementação digital auto-aplicável do **Teste de Stroop - Versão Victoria (Perret, 1974)** para avaliação neuropsicológica de atenção seletiva, controle inibitório e flexibilidade mental. Desenvolvido em HTML5, JavaScript puro e CSS com paradigma psicofísico rigoroso.
 
 ## 📋 Índice
 
 - [Sobre o Teste](#sobre-o-teste)
-- [Versão Victoria](#versão-victoria)
 - [Características](#características)
-- [Demo](#demo)
+- [Paradigma Auto-Aplicado](#paradigma-auto-aplicado)
 - [Instalação](#instalação)
 - [Como Usar](#como-usar)
-- [Interpretação dos Resultados](#interpretação-dos-resultados)
-- [Dados Normativos](#dados-normativos)
 - [Estrutura de Dados](#estrutura-de-dados)
-- [Exportação de Resultados](#exportação-de-resultados)
+- [Dados Normativos](#dados-normativos)
+- [Interpretação](#interpretação)
+- [Exportação](#exportação)
+- [Validade Clínica](#validade-clínica)
 - [Compatibilidade](#compatibilidade)
-- [Uso Clínico](#uso-clínico)
+- [Limitações](#limitações)
 - [Contribuindo](#contribuindo)
 - [Licença](#licença)
 - [Citação](#citação)
 
 ## 🧠 Sobre o Teste
 
-O Teste de Stroop é uma das ferramentas mais consolidadas em neuropsicologia para avaliação de funções executivas, especificamente:
+O Teste de Stroop é um instrumento neuropsicológico clássico para avaliação de:
 
-### Funções Avaliadas
+- **Atenção Seletiva**: Capacidade de focar em informação relevante
+- **Controle Inibitório**: Supressão de respostas automáticas
+- **Flexibilidade Mental**: Adaptação a demandas conflitantes
+- **Velocidade de Processamento**: Eficiência cognitiva
 
-- **Atenção Seletiva**: Capacidade de focar em informações relevantes ignorando distratores
-- **Controle Inibitório**: Habilidade de suprimir respostas automáticas inadequadas  
-- **Flexibilidade Mental**: Adaptação a demandas cognitivas conflitantes
-- **Velocidade de Processamento**: Eficiência do processamento cognitivo
-- **Sustentação Atencional**: Manutenção do foco ao longo da tarefa
+### Versão Victoria
 
-### Sensibilidade Clínica
+Esta implementação segue fielmente o protocolo **Victoria (Perret, 1974)**, amplamente validado internacionalmente:
 
-O teste é sensível a:
-- Disfunções executivas frontais
-- Declínio cognitivo em idosos
-- TDAH e distúrbios atencionais
-- Lesões cerebrais
-- Demências e comprometimento cognitivo leve
+**Estrutura:**
+- **Cartão D (Retângulos)**: 24 retângulos coloridos - linha de base de velocidade
+- **Cartão W (Palavras Neutras)**: 24 palavras neutras coloridas - interferência semântica
+- **Cartão C (Cores)**: 24 nomes de cores em cores diferentes - interferência máxima (Efeito Stroop)
 
-## 📚 Versão Victoria
-
-Esta implementação segue fielmente a **Versão Victoria** padronizada por Perret (1974), amplamente utilizada na prática clínica brasileira e internacional.
-
-### Estrutura do Teste
-
-O teste consiste em **3 cartões** apresentados sequencialmente:
-
-#### Cartão 1 - Retângulos (D)
-- **24 retângulos coloridos** (6 linhas × 4 colunas)
-- Tarefa: Nomear as cores dos retângulos
-- Objetivo: Linha de base de velocidade de nomeação
-- Cores: Verde, Azul, Rosa, Marrom
-
-#### Cartão 2 - Palavras Neutras (W)
-- **24 palavras neutras** coloridas
-- Palavras: CADA, NUNCA, HOJE, TUDO
-- Tarefa: Nomear as cores (ignorar as palavras)
-- Objetivo: Avaliar interferência semântica básica
-
-#### Cartão 3 - Cores (C)
-- **24 nomes de cores** impressos em cores diferentes
-- Palavras: VERDE, AZUL, ROSA, MARROM
-- Tarefa: Nomear as cores (ignorar o significado)
-- Objetivo: Máxima interferência (Efeito Stroop)
-
-### Administração
-
-- **Duração**: Aproximadamente 5 minutos
-- **População**: Adolescentes, adultos e idosos (17+ anos)
-- **Instrução**: Nomear cores em sequência, linha por linha, esquerda para direita, o mais rápido possível
+**Cores utilizadas:**
+- Verde (#00FF00)
+- Rosa (#FFC0CB)
+- Azul (#0000FF)
+- Marrom (#8B4513)
 
 ## ✨ Características
 
-### Interface Profissional
-- Interface fiel ao formato físico do teste
-- Layout de 6×4 itens conforme protocolo original
-- Cores padronizadas (Verde #00FF00, Azul #0000FF, Rosa #FFC0CB, Marrom #8B4513)
-- Timer com precisão de centésimos de segundo
-- Design responsivo para diferentes dispositivos
+### Interface Auto-Aplicável
+- ✅ **Apresentação sequencial**: Um estímulo por vez (paradigma psicofísico)
+- ✅ **Feedback imediato**: Visual instantâneo (correto/incorreto)
+- ✅ **Progressão automática**: Fluxo contínuo entre itens e cartões
+- ✅ **Sem necessidade de avaliador**: Participante responde diretamente
+- ✅ **Cronometragem precisa**: Timer de alta resolução (10ms)
 
-### Funcionalidades Clínicas
-- Registro automático de tempo por cartão
-- Contagem de erros por cartão
-- Cálculo automático da razão C/D (efeito interferência)
-- Comparação com dados normativos por faixa etária
-- Cálculo de Z-scores
-- Feedback visual de progresso
+### Coleta de Dados Rigorosa
+- ✅ **Tempo de reação por item**: Precisão de milissegundos
+- ✅ **Registro completo**: Cada resposta com timestamp
+- ✅ **Cálculo automático de erros**: Sem intervenção manual
+- ✅ **Sequência preservada**: Ordem exata conforme protocolo Victoria
 
-### Coleta de Dados
-- Registro completo de cada resposta
-- Timestamps precisos
-- Identificação de erros por item
-- Metadados do participante (nome, idade, escolaridade)
-- Exportação em múltiplos formatos
+### Análise Automatizada
+- ✅ **Razão C/D**: Efeito de interferência
+- ✅ **Z-scores**: Comparação com normas brasileiras
+- ✅ **Interpretação automática**: Feedback imediato ao participante
+- ✅ **Dados normativos integrados**: 7 faixas etárias (17-80+)
 
-## 🎮 Demo
+## 🎯 Paradigma Auto-Aplicado
 
-[🔗 Experimente online](seu-link-github-pages)
+Esta implementação utiliza princípios de psicofísica experimental:
 
-![Stroop Victoria Demo](screenshot.png)
+### Fluxo de Apresentação
+
+```
+[Estímulo 1] → [Resposta] → [Feedback 300ms] → [Pausa 200ms] →
+[Estímulo 2] → [Resposta] → [Feedback 300ms] → [Pausa 200ms] →
+... (24 itens) →
+[Próximo Cartão]
+```
+
+### Características Psicofísicas
+
+**Inspirado em protocolos MATLAB clássicos:**
+- Apresentação serial (não simultânea)
+- Inter-stimulus interval (ISI) controlado
+- Feedback imediato para reforço
+- Coleta de tempo de reação preciso
+- Registro automático de acurácia
+
+**Diferenças do protocolo tradicional:**
+
+| Aspecto | Tradicional (Com Avaliador) | Auto-Aplicado (Digital) |
+|---------|----------------------------|-------------------------|
+| Apresentação | Grade completa (6×4) | Item por item |
+| Resposta | Verbal | Clique em botão |
+| Registro | Manual (avaliador) | Automático |
+| Feedback | Ausente ou tardio | Imediato |
+| Tempo | Cronômetro total | TR individual + total |
+| Erros | Contagem manual | Detecção automática |
 
 ## 📥 Instalação
 
 ### Opção 1: Download Direto
 ```bash
-git clone https://github.com/seu-usuario/stroop-victoria.git
-cd stroop-victoria
-# Abra index.html no navegador
+# Clone o repositório
+git clone https://github.com/seu-usuario/stroop-victoria-auto.git
+
+# Navegue até a pasta
+cd stroop-victoria-auto
+
+# Abra no navegador
+open index.html
 ```
 
 ### Opção 2: Servidor Local
@@ -130,165 +130,73 @@ npx http-server
 
 ### Opção 3: GitHub Pages
 1. Fork do repositório
-2. Settings → Pages → Source: main branch
-3. Acesse: `https://seu-usuario.github.io/stroop-victoria`
+2. Settings → Pages → Source: main
+3. Acesse: `https://seu-usuario.github.io/stroop-victoria-auto`
 
 ## 🚀 Como Usar
 
-### Aplicação do Teste
+### Para Participantes
 
-1. **Configuração Inicial**
-   - Nome completo do participante
-   - Idade (para comparação normativa)
-   - Nível de escolaridade
-   - Clique em "Iniciar Teste"
+1. **Acesse o teste** via navegador
+2. **Preencha seus dados**:
+   - Nome completo
+   - Idade
+   - Escolaridade
+3. **Leia as instruções** cuidadosamente
+4. **Clique "Iniciar Teste"**
+5. **Para cada estímulo mostrado**:
+   - Identifique a **COR** (não o texto)
+   - Clique no botão correspondente
+   - Continue até o final
+6. **Visualize seus resultados**
+7. **Exporte** se necessário
 
-2. **Cartão 1 - Retângulos**
-   - Instrua: "Nomeie as CORES dos retângulos"
-   - Clique em qualquer cor para iniciar o cronômetro
-   - Clique nas cores conforme o participante nomeia
-   - Continue até completar os 24 itens
+### Para Pesquisadores/Clínicos
 
-3. **Cartão 2 - Palavras Neutras**
-   - Instrua: "Nomeie as CORES das palavras, ignore o que está escrito"
-   - Repita o processo
+**Configuração:**
+- Ambiente silencioso e sem distrações
+- Tela adequada (mínimo 13")
+- Conexão estável (se online)
+- Instruções claras ao participante
 
-4. **Cartão 3 - Cores (Interferência)**
-   - Instrua: "Nomeie as CORES, ignore os nomes das cores escritos"
-   - Complete os 24 itens
-   - Teste finaliza automaticamente
+**Orientações ao participante:**
+- "Responda o mais rápido possível"
+- "Clique na COR que vê, não no que está escrito"
+- "Não se preocupe com erros ocasionais"
+- "Mantenha o foco durante todo o teste"
 
-5. **Visualização e Exportação**
-   - Revise os resultados imediatamente
-   - Exporte em CSV, JSON ou PDF
-   - Reinicie para novo participante
-
-### Orientações para Avaliadores
-
-**Antes de Iniciar:**
-- Verifique se o participante entendeu as instruções
-- Teste de visão de cores adequada
-- Ambiente tranquilo e sem distrações
-- Posicionamento confortável
-
-**Durante a Aplicação:**
-- Não interrompa durante a execução de um cartão
-- Registre todos os erros (auto-correções contam)
-- Mantenha ritmo constante
-- Encorajamento neutro se necessário
-
-**Após Conclusão:**
-- Verifique se houve dificuldades técnicas
-- Documente observações qualitativas
+**Após o teste:**
 - Exporte dados imediatamente
+- Armazene com identificação adequada
+- Respeite LGPD/privacidade
 
-## 📊 Interpretação dos Resultados
+## 📊 Estrutura de Dados
 
-### Métricas Principais
-
-#### 1. Tempo por Cartão (segundos)
-- **Cartão D**: Linha de base de velocidade
-- **Cartão W**: Interferência semântica
-- **Cartão C**: Interferência máxima (Efeito Stroop)
-
-#### 2. Erros
-- Contagem total por cartão
-- Maior relevância clínica no Cartão C
-
-#### 3. Razão C/D
-```
-C/D = Tempo Cartão C ÷ Tempo Cartão D
-```
-- **Interpretação**: Magnitude do efeito de interferência
-- Valores típicos: 1.8 - 3.0
-- Valores > 3.0: Sugerem dificuldade significativa
-
-#### 4. Z-Score
-```
-Z = (Tempo Observado - Média Normativa) ÷ Desvio Padrão
-```
-- **|Z| ≤ 1.0**: Dentro do esperado
-- **Z > 1.0**: Abaixo do esperado (tempo aumentado)
-- **Z < -1.0**: Acima do esperado (tempo diminuído)
-
-### Interpretação Clínica
-
-#### Desempenho Normal
-- Tempos dentro de ±1 DP da média normativa
-- Poucos erros (0-2) nos cartões
-- Razão C/D dentro da faixa esperada
-- Aumento progressivo: D < W < C
-
-#### Sinais de Alerta
-- **Tempo elevado no Cartão C**: Dificuldade de inibição
-- **Muitos erros**: Desatenção ou impulsividade
-- **C/D > 3.0**: Interferência excessiva
-- **Tempo D já elevado**: Lentidão processual geral
-
-#### Perfis Clínicos
-
-**TDAH:**
-- Erros elevados em todos os cartões
-- Variabilidade de desempenho
-- Impulsividade nas respostas
-
-**Declínio Cognitivo:**
-- Tempo aumentado progressivamente
-- Dificuldade especial no Cartão C
-- Mais proeminente em idosos
-
-**Lesão Frontal:**
-- Razão C/D muito elevada
-- Perseverações
-- Dificuldade de autocorreção
-
-## 📈 Dados Normativos
-
-### Tabela Normativa (Versão Victoria)
-
-| Faixa Etária | D (seg) | W (seg) | C (seg) | C/D |
-|--------------|---------|---------|---------|-----|
-| 17-29 anos   | 11.79 ± 2.79 | 13.46 ± 3.11 | 21.28 ± 5.37 | 1.85 |
-| 30-39 anos   | 11.14 ± 1.68 | 13.81 ± 2.66 | 25.08 ± 9.52 | 2.25 |
-| 40-49 anos   | 12.16 ± 1.96 | 14.82 ± 2.46 | 27.20 ± 5.15 | 2.28 |
-| 50-59 anos   | 12.84 ± 2.43 | 15.96 ± 2.93 | 28.48 ± 8.07 | 2.28 |
-| 60-69 anos   | 12.56 ± 1.89 | 16.16 ± 3.46 | 31.32 ± 8.22 | 2.55 |
-| 70-79 anos   | 14.96 ± 5.10 | 19.11 ± 5.13 | 39.56 ± 13.26 | 2.81 |
-| 80+ anos     | 19.31 ± 4.91 | 23.91 ± 5.30 | 56.98 ± 23.70 | 2.95 |
-
-**Fonte**: Victoria - Perret (1974), validação brasileira
-
-### Considerações Normativas
-
-- Dados baseados em população brasileira
-- Variação normal aumenta com a idade
-- Escolaridade pode influenciar desempenho
-- Considerar contexto cultural e linguístico
-
-## 📁 Estrutura de Dados
-
-### Formato de Exportação
+### Formato de Exportação (JSON)
 
 ```json
 {
   "participante": {
     "nome": "João Silva",
-    "idade": 45,
+    "idade": 35,
     "escolaridade": "superior",
     "dataAvaliacao": "30/09/2025, 14:30:00"
   },
   "resultados": {
     "cartaoD_Retangulos": {
       "tempo_segundos": "12.45",
-      "erros": 0
+      "erros": 1,
+      "tentativas": 24
     },
     "cartaoW_PalavrasNeutras": {
       "tempo_segundos": "15.23",
-      "erros": 1
+      "erros": 2,
+      "tentativas": 24
     },
     "cartaoC_Cores": {
       "tempo_segundos": "28.67",
-      "erros": 2
+      "erros": 5,
+      "tentativas": 24
     },
     "razao_C_sobre_D": "2.30"
   },
@@ -296,12 +204,13 @@ Z = (Tempo Observado - Média Normativa) ÷ Desvio Padrão
     {
       "cartao": "D",
       "tipo": "rectangles",
-      "tentativas": [
+      "trials": [
         {
           "itemIndex": 0,
-          "correctColor": "verde",
-          "userResponse": "verde",
+          "correctColor": "V",
+          "userResponse": "V",
           "isCorrect": true,
+          "reactionTime": 845,
           "timestamp": 1727712600123
         }
       ]
@@ -310,67 +219,201 @@ Z = (Tempo Observado - Média Normativa) ÷ Desvio Padrão
 }
 ```
 
-## 📤 Exportação de Resultados
+### Variáveis Coletadas
+
+**Por Cartão:**
+- Tempo total (segundos)
+- Número de erros
+- Número de tentativas
+
+**Por Item:**
+- Índice do item (0-23)
+- Cor correta
+- Resposta do usuário
+- Acerto (booleano)
+- Tempo de reação (ms)
+- Timestamp absoluto
+
+## 📈 Dados Normativos
+
+Normas brasileiras validadas (Campanholo et al., 2014):
+
+| Faixa Etária | D (seg) ± DP | W (seg) ± DP | C (seg) ± DP | C/D |
+|--------------|--------------|--------------|--------------|-----|
+| 17-29 anos   | 11.79 ± 2.79 | 13.46 ± 3.11 | 21.28 ± 5.37 | 1.85 |
+| 30-39 anos   | 11.14 ± 1.68 | 13.81 ± 2.66 | 25.08 ± 9.52 | 2.25 |
+| 40-49 anos   | 12.16 ± 1.96 | 14.82 ± 2.46 | 27.20 ± 5.15 | 2.28 |
+| 50-59 anos   | 12.84 ± 2.43 | 15.96 ± 2.93 | 28.48 ± 8.07 | 2.28 |
+| 60-69 anos   | 12.56 ± 1.89 | 16.16 ± 3.46 | 31.32 ± 8.22 | 2.55 |
+| 70-79 anos   | 14.96 ± 5.10 | 19.11 ± 5.13 | 39.56 ± 13.26 | 2.81 |
+| 80+ anos     | 19.31 ± 4.91 | 23.91 ± 5.30 | 56.98 ± 23.70 | 2.95 |
+
+**Fonte:** Campanholo et al. (2014) - Dement Neuropsychol 8(1):26-31
+
+## 📖 Interpretação
+
+### Métricas Principais
+
+**1. Tempo por Cartão**
+- Velocidade de processamento
+- Comparar com normas da faixa etária
+
+**2. Razão C/D**
+```
+C/D = Tempo Cartão C ÷ Tempo Cartão D
+```
+- **Normal**: 1.8 - 3.0
+- **Elevado**: > 3.0 (interferência excessiva)
+
+**3. Z-Score**
+```
+Z = (Tempo Observado - Média) ÷ Desvio Padrão
+```
+- **|Z| ≤ 1.0**: Normal
+- **Z > 1.0**: Lentidão
+- **Z < -1.0**: Muito rápido
+
+**4. Taxa de Erros**
+- Cartão C mais sensível
+- > 8 erros: Atenção comprometida
+
+### Interpretação Clínica
+
+**Desempenho Normal:**
+- Tempos dentro de ±1 DP
+- Poucos erros (< 3 por cartão)
+- C/D entre 1.8-3.0
+- Progressão D < W < C
+
+**Sinais de Alerta:**
+- Tempo C muito elevado
+- C/D > 3.0
+- Muitos erros no Cartão C
+- Inconsistência (muito rápido com muitos erros)
+
+**Perfis Típicos:**
+
+| Condição | Tempo | Erros | C/D | Observação |
+|----------|-------|-------|-----|------------|
+| TDAH | Normal/rápido | Muitos | Normal | Impulsividade |
+| Declínio Cognitivo | Aumentado | Moderados | Elevado | Lentidão global |
+| Lesão Frontal | C elevado | Muitos em C | Muito alto | Desinibição |
+| Ansiedade | Variável | Poucos | Normal | Inconsistência |
+
+## 📤 Exportação
 
 ### Formatos Disponíveis
 
-#### 1. CSV (Excel, SPSS, R)
-- Formato tabular para análise estatística
-- UTF-8 com BOM para caracteres especiais
-- Estrutura hierárquica: dados do participante + resultados
+**1. CSV (Comma-Separated Values)**
+- Compatível: Excel, SPSS, R, Python, MATLAB
+- Codificação: UTF-8 com BOM
+- Estrutura: Resumo + Detalhamento por item
 
-**Exemplo:**
 ```csv
-TESTE DE STROOP - VERSAO VICTORIA
+TESTE DE STROOP - VERSAO VICTORIA (AUTO-APLICADO)
 
 DADOS DO PARTICIPANTE
 Campo,Valor
 Nome,"João Silva"
-Idade,45
-Escolaridade,"superior"
+Idade,35
 
 RESULTADOS
-Cartao,Tempo(s),Erros
-D - Retangulos,12.45,0
-W - Palavras Neutras,15.23,1
-C - Cores,28.67,2
-Razao C/D,2.30,
+Cartao,Tempo(s),Erros,Acertos,Total
+D - Retangulos,12.45,1,23,24
+
+DETALHAMENTO POR ITEM
+Cartao,Item,CorCorreta,Resposta,Correto,TempoReacao(ms)
+D,1,V,V,Sim,845
 ```
 
-#### 2. JSON (Análise Programática)
-- Estrutura completa com metadados
-- Ideal para bancos de dados
-- Fácil integração com Python, R, MATLAB
+**2. JSON (JavaScript Object Notation)**
+- Análise programática
+- Estrutura hierárquica completa
+- Fácil integração com sistemas
 
-#### 3. PDF (Relatório Clínico)
-- Documento formatado profissional
-- Tabela de resultados
-- Pronto para prontuário
+**3. PDF (Portable Document Format)**
+- Relatório formatado
+- Documentação clínica
+- Inclui tabelas e métricas
 
-### Uso dos Dados Exportados
+### Análise Estatística
 
-**Para Análise Estatística (R):**
-```r
-# Importar dados
-dados <- read.csv("Stroop_Victoria_Participante_2025.csv", 
-                  skip = 7, header = TRUE)
-
-# Análise descritiva
-summary(dados$Tempo.s.)
-```
-
-**Para Análise com Python:**
+**Python (Pandas):**
 ```python
-import json
 import pandas as pd
+import json
 
-# Carregar JSON
+# Carregar dados
 with open('stroop_data.json', 'r') as f:
     data = json.load(f)
 
-# Converter para DataFrame
-df = pd.DataFrame([data['resultados']])
+# Análise de tempo de reação
+trials = data['detalhamento'][0]['trials']
+df = pd.DataFrame(trials)
+
+# Estatísticas descritivas
+print(df['reactionTime'].describe())
+
+# Separar corretos vs incorretos
+corretos = df[df['isCorrect'] == True]['reactionTime']
+incorretos = df[df['isCorrect'] == False]['reactionTime']
 ```
+
+**R:**
+```r
+library(jsonlite)
+library(dplyr)
+
+# Carregar dados
+data <- fromJSON('stroop_data.json')
+
+# Extrair trials
+trials <- data$detalhamento[[1]]$trials
+
+# Análise
+summary(trials$reactionTime)
+t.test(reactionTime ~ isCorrect, data=trials)
+```
+
+## ✅ Validade Clínica
+
+### Validação do Formato Auto-Aplicado
+
+**Vantagens:**
+- ✅ Padronização absoluta (sem variação de avaliador)
+- ✅ Tempo de reação preciso (impossível manualmente)
+- ✅ Registro completo (nenhum erro perdido)
+- ✅ Acessibilidade (aplicação remota)
+- ✅ Custo-efetivo (sem necessidade de avaliador)
+
+**Limitações:**
+- ⚠️ Não observa comportamento qualitativo
+- ⚠️ Requer alfabetização digital básica
+- ⚠️ Modo de resposta diferente (clique vs verbal)
+- ⚠️ Não detecta estratégias atípicas
+
+### Quando Usar
+
+**Apropriado para:**
+- Triagem em larga escala
+- Telepsicologia/teleneuropsicologia
+- Pesquisa com muitos participantes
+- Autoavaliação em contextos não-clínicos
+- Monitoramento longitudinal
+
+**Não recomendado para:**
+- Diagnóstico clínico isolado (sempre combinar com outros testes)
+- Pacientes com déficits motores severos
+- Pacientes com baixa compreensão digital
+- Contextos forenses (preferir aplicação presencial)
+
+### Considerações Éticas
+
+- **Consentimento informado**: Obrigatório antes de iniciar
+- **Privacidade**: Dados sensíveis (LGPD)
+- **Devolução**: Participante deve receber resultados apropriados
+- **Limitações**: Explicar que é uma ferramenta de triagem
+- **Uso profissional**: Interpretação por profissional qualificado
 
 ## 🌐 Compatibilidade
 
@@ -383,110 +426,88 @@ df = pd.DataFrame([data['resultados']])
 | Safari    | ✅ 14+  | ✅     | Sim     |
 | Edge      | ✅ 90+  | ✅     | Sim     |
 
-### Dispositivos Recomendados
+### Dispositivos
 
-**Ideal:**
-- Desktop ou laptop (tela ≥ 13")
-- Mouse para seleção precisa
-- Ambiente controlado
+**Recomendado:**
+- Desktop/Laptop (≥ 13")
+- Mouse ou touchpad preciso
+- Ambiente silencioso
 
 **Aceitável:**
 - Tablet (≥ 10")
 - Touch screen responsivo
 
-**Não Recomendado:**
-- Smartphones (tela muito pequena)
-- Ambientes com distrações
+**Não recomendado:**
+- Smartphones (tela pequena, toques imprecisos)
 
-## 🏥 Uso Clínico
+## ⚠️ Limitações
 
-### Indicações
+### Diferenças do Protocolo Original
 
-- Avaliação neuropsicológica completa
-- Rastreio de disfunções executivas
-- Monitoramento de declínio cognitivo
-- Avaliação pré/pós intervenção
-- Perícia médica e jurídica
+1. **Modo de resposta**: Clique vs nomeação verbal
+2. **Apresentação**: Sequential vs simultânea (grade)
+3. **Feedback**: Imediato vs ausente
+4. **Tempo**: Individual + total vs apenas total
 
-### Limitações
+### Implicações
 
-- Requer alfabetização
-- Sensível a daltonismo
-- Pode ser afetado por fadiga
-- Não é diagnóstico isolado
+**Tempos podem ser diferentes:**
+- Clique geralmente mais rápido que verbal
+- Feedback pode facilitar (efeito aprendizagem)
+- Apresentação serial elimina estratégias de varredura
 
-### Boas Práticas
-
-1. **Padronização**: Siga sempre as mesmas instruções
-2. **Ambiente**: Local silencioso e iluminado
-3. **Rapport**: Estabeleça boa relação com o participante
-4. **Observação**: Registre comportamentos qualitativos
-5. **Contexto**: Considere o quadro clínico completo
-
-### Aspectos Éticos
-
-- Consentimento informado obrigatório
-- Sigilo dos dados (LGPD)
-- Uso apenas por profissionais habilitados
-- Devolução de resultados apropriada
+**Recomendações:**
+- Use normas específicas se disponíveis para formato digital
+- Compare intra-indivíduo (pré/pós) com cautela
+- Não compare diretamente com normas de aplicação tradicional
+- Considere como ferramenta complementar
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas, especialmente de neuropsicólogos e pesquisadores.
+Contribuições são bem-vindas, especialmente:
+
+- [ ] Validação com dados de formato digital
+- [ ] Normas específicas para versão auto-aplicada
+- [ ] Tradução para outros idiomas
+- [ ] Acessibilidade aprimorada
+- [ ] Integração com sistemas de prontuário
 
 ### Como Contribuir
 
 1. Fork do projeto
-2. Crie branch para feature (`git checkout -b feature/Melhoria`)
-3. Commit das mudanças (`git commit -m 'Adiciona Melhoria'`)
-4. Push para branch (`git push origin feature/Melhoria`)
-5. Abra Pull Request
-
-### Áreas Prioritárias
-
-- [ ] Validação com mais dados normativos brasileiros
-- [ ] Suporte a outras versões do Stroop (Golden, Comalli)
-- [ ] Integração com sistemas de prontuário eletrônico
-- [ ] Análise estatística automatizada
-- [ ] Modo de treinamento/demonstração
+2. Crie branch (`git checkout -b feature/Melhoria`)
+3. Commit (`git commit -m 'Adiciona Melhoria'`)
+4. Push (`git push origin feature/Melhoria`)
+5. Pull Request
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a Licença MIT - veja [LICENSE](LICENSE) para detalhes.
+MIT License - Uso livre para fins clínicos, educacionais e de pesquisa.
 
 ```
-MIT License - Uso livre para fins clínicos, educacionais e de pesquisa.
+Copyright (c) 2025
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction...
 ```
 
 ## 📚 Citação
 
-### Para Uso do Software
+### Software
 
 ```bibtex
-@software{stroop_victoria_2025,
-  title = {Teste de Stroop - Versão Victoria: Implementação Digital},
+@software{stroop_victoria_auto_2025,
+  title = {Teste de Stroop Victoria - Versão Auto-Aplicada Digital},
   author = {[Seu Nome]},
   year = {2025},
-  url = {https://github.com/seu-usuario/stroop-victoria},
+  url = {https://github.com/seu-usuario/stroop-victoria-auto},
   version = {1.0.0}
 }
 ```
 
-### Referências do Teste
+### Protocolo Original
 
-**Versão Original:**
-```bibtex
-@article{stroop1935,
-  author = {Stroop, J. Ridley},
-  title = {Studies of interference in serial verbal reactions},
-  journal = {Journal of Experimental Psychology},
-  volume = {18},
-  pages = {643--662},
-  year = {1935}
-}
-```
-
-**Versão Victoria:**
 ```bibtex
 @article{perret1974,
   author = {Perret, E.},
@@ -498,7 +519,8 @@ MIT License - Uso livre para fins clínicos, educacionais e de pesquisa.
 }
 ```
 
-**Dados Normativos Brasileiros:**
+### Normas Brasileiras
+
 ```bibtex
 @article{campanholo2014,
   author = {Campanholo, K. R. and others},
@@ -507,28 +529,23 @@ MIT License - Uso livre para fins clínicos, educacionais e de pesquisa.
   volume = {8},
   number = {1},
   pages = {26--31},
-  year = {2014}
+  year = {2014},
+  doi = {10.1590/S1980-57642014DN81000005}
 }
 ```
 
+## 📞 Suporte
 
-## 🙏 Agradecimentos
+**Issues:** [GitHub Issues](https://github.com/seu-usuario/stroop-victoria-auto/issues)
 
-- Baseado no protocolo Victoria (Perret, 1974)
-- Dados normativos de estudos brasileiros de validação
-- Comunidade de neuropsicologia clínica
-- Feedback de profissionais da área
+**Questões Clínicas:** Consulte profissional de neuropsicologia
 
-## 📞 Contato
-
-**Para questões clínicas:**
-- Consulte profissional de neuropsicologia habilitado
-- Este software não substitui avaliação profissional
+**Uso em Pesquisa:** Cite adequadamente em publicações
 
 ---
 
-**⚕️ Uso Profissional**: Este teste deve ser aplicado e interpretado apenas por profissionais qualificados (psicólogos, neuropsicólogos, médicos).
+**⚕️ Aviso:** Este teste é uma ferramenta de triagem/pesquisa. Não substitui avaliação neuropsicológica completa por profissional qualificado.
 
-**📊 Para Pesquisa**: Cite adequadamente em publicações científicas.
+**🔬 Para Pesquisa:** Considere validação adicional do formato auto-aplicado antes de uso em estudos clínicos.
 
-[![Star on GitHub](https://img.shields.io/github/stars/seu-usuario/stroop-victoria?style=social)](https://github.com/seu-usuario/stroop-victoria)
+**📊 Dados Abertos:** Contribua com dados normativos para versão digital!
