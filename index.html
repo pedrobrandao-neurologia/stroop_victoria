@@ -20,63 +20,70 @@
             touch-action: manipulation;
         }
         
-        .fixation-cross {
-            font-size: 100px;
-            font-weight: bold;
-            animation: pulse 1s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        .stimulus-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .stimulus-item {
-            aspect-ratio: 2/1;
+        .stimulus-container {
+            min-height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        .stimulus-item {
+            font-size: 72px;
             font-weight: 800;
             text-transform: uppercase;
-            border: 2px solid #374151;
-            border-radius: 8px;
-            background-color: #1f2937;
+            letter-spacing: 2px;
+            user-select: none;
         }
         
         .response-btn {
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 20px;
             text-transform: uppercase;
-            border: 3px solid transparent;
-            min-height: 70px;
+            border: 4px solid transparent;
+            min-height: 80px;
+            cursor: pointer;
+            user-select: none;
         }
         
-        .response-btn:hover {
+        .response-btn:hover:not(:disabled) {
             transform: scale(1.05);
             border-color: white;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.3);
         }
         
-        .response-btn:active {
+        .response-btn:active:not(:disabled) {
             transform: scale(0.95);
         }
         
-        .instruction-box {
-            background-color: #1f2937;
-            border: 2px solid #3b82f6;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
+        .response-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .feedback-correct {
+            animation: feedback-correct 0.6s ease-out;
+        }
+        
+        .feedback-incorrect {
+            animation: feedback-incorrect 0.6s ease-out;
+        }
+        
+        @keyframes feedback-correct {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background-color: #22c55e; border-color: #22c55e; }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes feedback-incorrect {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
         
         .timer-display {
@@ -84,19 +91,27 @@
             font-weight: bold;
             color: #3b82f6;
             text-align: center;
-            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .instruction-box {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         
         @media (max-width: 640px) {
             .stimulus-item {
-                font-size: 20px;
+                font-size: 48px;
             }
             .response-btn {
                 font-size: 16px;
-                min-height: 60px;
+                min-height: 70px;
             }
-            .stimulus-grid {
-                gap: 0.5rem;
+            .timer-display {
+                font-size: 36px;
             }
         }
     </style>
@@ -112,12 +127,12 @@
                 
                 <div class="space-y-4 mb-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Nome do Participante *</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Nome Completo *</label>
                         <input 
                             type="text" 
                             id="subject-name" 
                             class="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
-                            placeholder="Digite o nome completo"
+                            placeholder="Digite seu nome completo"
                             required>
                     </div>
                     
@@ -147,14 +162,15 @@
                 </div>
                 
                 <div class="bg-gray-800 rounded-lg p-4 mb-6">
-                    <h3 class="font-semibold text-white mb-3">Sobre o Teste:</h3>
-                    <p class="text-gray-300 text-sm mb-3">O Teste de Stroop avalia a atenção seletiva, flexibilidade mental e controle inibitório. Consiste em 3 cartões:</p>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-300 text-sm">
-                        <li><strong>Cartão 1 (D):</strong> Nomear cores de retângulos</li>
-                        <li><strong>Cartão 2 (W):</strong> Nomear cores de palavras neutras</li>
-                        <li><strong>Cartão 3 (C):</strong> Nomear cores de palavras de cores (interferência)</li>
-                    </ol>
-                    <p class="text-gray-400 text-xs mt-3">Duração aproximada: 5 minutos</p>
+                    <h3 class="font-semibold text-white mb-3">Instruções:</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• O teste possui 3 cartões diferentes</li>
+                        <li>• Você verá estímulos um por vez na tela</li>
+                        <li>• Sua tarefa é clicar no botão correspondente à <strong>COR</strong> do estímulo</li>
+                        <li>• Responda o mais rápido e preciso possível</li>
+                        <li>• Cada cartão tem 24 itens (6 linhas × 4 colunas)</li>
+                        <li>• Duração aproximada: 5 minutos</li>
+                    </ul>
                 </div>
                 
                 <button 
@@ -169,32 +185,43 @@
         <div id="test-screen" class="hidden w-full max-w-4xl">
             <div class="bg-gray-900 rounded-xl p-6 md:p-8 border border-gray-700">
                 
-                <!-- Instrução do Cartão Atual -->
-                <div id="instruction-box" class="instruction-box">
-                    <h2 id="card-title" class="text-2xl font-bold text-white mb-2"></h2>
-                    <p id="card-instruction" class="text-gray-300"></p>
+                <!-- Cabeçalho com Info -->
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-gray-400 text-sm">
+                        <span id="card-progress">Cartão 1/3</span>
+                        <span class="mx-2">|</span>
+                        <span id="item-progress">Item 1/24</span>
+                    </div>
+                    <div class="timer-display" id="timer-display">0.00s</div>
                 </div>
                 
-                <!-- Timer -->
-                <div id="timer-display" class="timer-display"></div>
+                <!-- Instrução do Cartão Atual -->
+                <div id="instruction-box" class="instruction-box">
+                    <h2 id="card-title" class="text-xl font-bold text-white mb-2"></h2>
+                    <p id="card-instruction" class="text-gray-300 text-sm"></p>
+                </div>
                 
-                <!-- Grade de Estímulos -->
-                <div id="stimulus-grid" class="stimulus-grid mb-6"></div>
+                <!-- Área de Estímulo -->
+                <div class="stimulus-container">
+                    <div id="stimulus-item" class="stimulus-item"></div>
+                </div>
                 
                 <!-- Botões de Resposta -->
                 <div id="response-buttons" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                    <button class="response-btn rounded-lg py-4" data-color="verde" style="background-color: #00FF00; color: black;">Verde</button>
-                    <button class="response-btn rounded-lg py-4" data-color="azul" style="background-color: #0000FF; color: white;">Azul</button>
-                    <button class="response-btn rounded-lg py-4" data-color="rosa" style="background-color: #FFC0CB; color: black;">Rosa</button>
-                    <button class="response-btn rounded-lg py-4" data-color="marrom" style="background-color: #8B4513; color: white;">Marrom</button>
-                </div>
-                
-                <!-- Botão para Próximo Cartão -->
-                <div id="next-card-container" class="hidden mt-6 text-center">
-                    <button id="next-card-btn" class="bg-green-600 text-white font-bold py-4 px-8 rounded-lg hover:bg-green-700 transition-colors text-lg">
-                        Próximo Cartão
+                    <button class="response-btn rounded-lg" data-color="V" style="background-color: #00FF00; color: black;">
+                        Verde
+                    </button>
+                    <button class="response-btn rounded-lg" data-color="R" style="background-color: #FFC0CB; color: black;">
+                        Rosa
+                    </button>
+                    <button class="response-btn rounded-lg" data-color="A" style="background-color: #0000FF; color: white;">
+                        Azul
+                    </button>
+                    <button class="response-btn rounded-lg" data-color="M" style="background-color: #8B4513; color: white;">
+                        Marrom
                     </button>
                 </div>
+                
             </div>
         </div>
 
@@ -238,40 +265,63 @@
     <script>
     class StroopVictoriaTest {
         constructor() {
-            // Configurações da Versão Victoria
+            // Configurações Victoria
             this.COLORS = {
-                verde: { name: 'VERDE', hex: '#00FF00', rgb: [0, 255, 0] },
-                azul: { name: 'AZUL', hex: '#0000FF', rgb: [0, 0, 255] },
-                rosa: { name: 'ROSA', hex: '#FFC0CB', rgb: [255, 192, 203] },
-                marrom: { name: 'MARROM', hex: '#8B4513', rgb: [139, 69, 19] }
+                V: { name: 'VERDE', hex: '#00FF00' },
+                R: { name: 'ROSA', hex: '#FFC0CB' },
+                A: { name: 'AZUL', hex: '#0000FF' },
+                M: { name: 'MARROM', hex: '#8B4513' }
             };
             
             this.NEUTRAL_WORDS = ['CADA', 'NUNCA', 'HOJE', 'TUDO'];
+            
+            // Padrões exatos Victoria (6 linhas × 4 colunas)
+            this.CARD_PATTERNS = {
+                rectangles: [
+                    ['V','R','A','M'], ['R','M','V','A'], ['A','V','R','M'],
+                    ['M','R','A','V'], ['R','A','V','M'], ['M','V','A','R']
+                ],
+                neutralWords: [
+                    ['V','R','A','M'], ['R','M','V','A'], ['A','V','R','M'],
+                    ['M','R','A','V'], ['R','A','V','M'], ['M','V','A','R']
+                ],
+                colorWords: [
+                    ['V','R','A','M'], ['R','M','V','A'], ['A','V','R','M'],
+                    ['M','R','A','V'], ['R','A','V','M'], ['M','V','A','R']
+                ]
+            };
+            
+            this.WORD_PATTERNS = {
+                neutralWords: [
+                    ['CADA','NUNCA','HOJE','TUDO'], ['HOJE','TUDO','NUNCA','CADA'],
+                    ['NUNCA','CADA','TUDO','HOJE'], ['TUDO','HOJE','CADA','NUNCA'],
+                    ['CADA','NUNCA','HOJE','TUDO'], ['NUNCA','TUDO','CADA','HOJE']
+                ],
+                colorWords: [
+                    ['MARROM','AZUL','ROSA','VERDE'], ['AZUL','VERDE','MARROM','ROSA'],
+                    ['MARROM','ROSA','VERDE','AZUL'], ['VERDE','AZUL','ROSA','MARROM'],
+                    ['MARROM','VERDE','AZUL','ROSA'], ['ROSA','AZUL','VERDE','MARROM']
+                ]
+            };
             
             this.CARDS = [
                 {
                     id: 'D',
                     title: 'Cartão 1 - Retângulos (D)',
-                    instruction: 'Nomeie as CORES dos retângulos, da esquerda para direita, o mais rápido possível',
-                    type: 'rectangles',
-                    rows: 6,
-                    cols: 4
+                    instruction: 'Clique na cor que você vê (ignore tudo mais)',
+                    type: 'rectangles'
                 },
                 {
                     id: 'W',
                     title: 'Cartão 2 - Palavras Neutras (W)',
-                    instruction: 'Nomeie as CORES das palavras (ignore o que está escrito), da esquerda para direita',
-                    type: 'neutral-words',
-                    rows: 6,
-                    cols: 4
+                    instruction: 'Clique na COR da palavra (ignore o que está escrito)',
+                    type: 'neutralWords'
                 },
                 {
                     id: 'C',
                     title: 'Cartão 3 - Cores (C)',
-                    instruction: 'Nomeie as CORES das palavras (ignore o nome da cor escrito), da esquerda para direita',
-                    type: 'color-words',
-                    rows: 6,
-                    cols: 4
+                    instruction: 'Clique na COR da palavra (NÃO no que ela diz)',
+                    type: 'colorWords'
                 }
             ];
             
@@ -290,14 +340,14 @@
                 subjectAge: document.getElementById('subject-age'),
                 educationLevel: document.getElementById('education-level'),
                 startBtn: document.getElementById('start-btn'),
+                cardProgress: document.getElementById('card-progress'),
+                itemProgress: document.getElementById('item-progress'),
+                timerDisplay: document.getElementById('timer-display'),
                 instructionBox: document.getElementById('instruction-box'),
                 cardTitle: document.getElementById('card-title'),
                 cardInstruction: document.getElementById('card-instruction'),
-                timerDisplay: document.getElementById('timer-display'),
-                stimulusGrid: document.getElementById('stimulus-grid'),
+                stimulusItem: document.getElementById('stimulus-item'),
                 responseButtons: document.getElementById('response-buttons'),
-                nextCardContainer: document.getElementById('next-card-container'),
-                nextCardBtn: document.getElementById('next-card-btn'),
                 cardResults: document.getElementById('card-results'),
                 analysisResults: document.getElementById('analysis-results'),
                 resultsSubjectInfo: document.getElementById('results-subject-info'),
@@ -315,10 +365,11 @@
                 educationLevel: '',
                 currentCardIndex: 0,
                 currentItemIndex: 0,
-                startTime: 0,
                 cardStartTime: 0,
-                isCardActive: false,
+                itemStartTime: 0,
                 timerInterval: null,
+                currentStimuli: [],
+                awaitingResponse: false,
                 results: {
                     cards: [],
                     testDate: new Date().toISOString()
@@ -328,7 +379,6 @@
         
         bindEvents() {
             this.ui.startBtn.addEventListener('click', () => this.startTest());
-            this.ui.nextCardBtn.addEventListener('click', () => this.nextCard());
             this.ui.restartBtn.addEventListener('click', () => this.restart());
             
             document.querySelectorAll('.response-btn').forEach(btn => {
@@ -357,10 +407,10 @@
             this.ui.configScreen.classList.add('hidden');
             this.ui.testScreen.classList.remove('hidden');
             
-            this.loadCard(0);
+            this.startCard(0);
         }
         
-        loadCard(cardIndex) {
+        startCard(cardIndex) {
             if (cardIndex >= this.CARDS.length) {
                 this.endTest();
                 return;
@@ -371,90 +421,96 @@
             
             const card = this.CARDS[cardIndex];
             
+            this.ui.cardProgress.textContent = `Cartão ${cardIndex + 1}/3`;
             this.ui.cardTitle.textContent = card.title;
             this.ui.cardInstruction.textContent = card.instruction;
             
             this.generateStimuli(card);
             
-            this.ui.nextCardContainer.classList.add('hidden');
-            this.ui.responseButtons.classList.remove('hidden');
-            this.ui.timerDisplay.textContent = 'Pressione qualquer cor para iniciar';
-            
-            this.state.cardStartTime = 0;
-            this.state.isCardActive = false;
-            
             this.state.results.cards.push({
                 cardId: card.id,
                 cardType: card.type,
+                startTime: Date.now(),
                 time: 0,
                 errors: 0,
-                items: []
+                trials: []
             });
+            
+            this.state.cardStartTime = Date.now();
+            this.startTimer();
+            this.showNextStimulus();
         }
         
         generateStimuli(card) {
-            this.ui.stimulusGrid.innerHTML = '';
-            const totalItems = card.rows * card.cols;
-            const colorKeys = Object.keys(this.COLORS);
+            this.state.currentStimuli = [];
+            const colorPattern = this.CARD_PATTERNS[card.type];
+            const wordPattern = this.WORD_PATTERNS[card.type];
             
-            const stimuli = [];
-            
-            for (let i = 0; i < totalItems; i++) {
-                const correctColor = colorKeys[i % colorKeys.length];
-                let content = '';
-                let displayColor = this.COLORS[correctColor].hex;
-                let wordColor = null;
-                
-                if (card.type === 'rectangles') {
-                    content = '▮▮▮';
-                } else if (card.type === 'neutral-words') {
-                    content = this.NEUTRAL_WORDS[i % this.NEUTRAL_WORDS.length];
-                } else if (card.type === 'color-words') {
-                    const wordColorKey = colorKeys[(i + Math.floor(i / 4)) % colorKeys.length];
-                    content = this.COLORS[wordColorKey].name;
-                    wordColor = wordColorKey;
+            for (let row = 0; row < 6; row++) {
+                for (let col = 0; col < 4; col++) {
+                    const colorAbbr = colorPattern[row][col];
+                    const colorData = this.COLORS[colorAbbr];
+                    
+                    let content = '';
+                    if (card.type === 'rectangles') {
+                        content = '█████';
+                    } else if (card.type === 'neutralWords') {
+                        content = wordPattern[row][col];
+                    } else if (card.type === 'colorWords') {
+                        content = wordPattern[row][col];
+                    }
+                    
+                    this.state.currentStimuli.push({
+                        content: content,
+                        correctColor: colorAbbr,
+                        displayColor: colorData.hex
+                    });
                 }
-                
-                stimuli.push({
-                    index: i,
-                    content: content,
-                    correctColor: correctColor,
-                    displayColor: displayColor,
-                    wordColor: wordColor
-                });
-                
-                const item = document.createElement('div');
-                item.className = 'stimulus-item';
-                item.textContent = content;
-                item.style.color = displayColor;
-                item.dataset.index = i;
-                
-                this.ui.stimulusGrid.appendChild(item);
             }
-            
-            this.state.currentStimuli = stimuli;
         }
         
-        handleResponse(selectedColor) {
-            if (!this.state.isCardActive) {
-                this.startCardTimer();
-                return;
-            }
-            
+        startTimer() {
+            this.state.timerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - this.state.cardStartTime) / 1000).toFixed(2);
+                this.ui.timerDisplay.textContent = `${elapsed}s`;
+            }, 10);
+        }
+        
+        showNextStimulus() {
             if (this.state.currentItemIndex >= this.state.currentStimuli.length) {
+                this.finishCard();
                 return;
             }
             
-            const currentStimulus = this.state.currentStimuli[this.state.currentItemIndex];
-            const isCorrect = selectedColor === currentStimulus.correctColor;
+            const stimulus = this.state.currentStimuli[this.state.currentItemIndex];
+            
+            this.ui.itemProgress.textContent = `Item ${this.state.currentItemIndex + 1}/24`;
+            this.ui.stimulusItem.textContent = stimulus.content;
+            this.ui.stimulusItem.style.color = stimulus.displayColor;
+            
+            this.state.itemStartTime = Date.now();
+            this.state.awaitingResponse = true;
+            this.enableButtons();
+        }
+        
+        async handleResponse(selectedColor) {
+            if (!this.state.awaitingResponse) return;
+            
+            this.state.awaitingResponse = false;
+            this.disableButtons();
+            
+            const stimulus = this.state.currentStimuli[this.state.currentItemIndex];
+            const isCorrect = selectedColor === stimulus.correctColor;
+            const reactionTime = Date.now() - this.state.itemStartTime;
             
             const cardResult = this.state.results.cards[this.state.currentCardIndex];
             
-            cardResult.items.push({
+            cardResult.trials.push({
                 itemIndex: this.state.currentItemIndex,
-                correctColor: currentStimulus.correctColor,
+                correctColor: stimulus.correctColor,
                 userResponse: selectedColor,
                 isCorrect: isCorrect,
+                reactionTime: reactionTime,
                 timestamp: Date.now()
             });
             
@@ -462,27 +518,35 @@
                 cardResult.errors++;
             }
             
-            const stimulusElement = this.ui.stimulusGrid.children[this.state.currentItemIndex];
-            if (stimulusElement) {
-                stimulusElement.style.opacity = '0.3';
-                stimulusElement.style.border = isCorrect ? '2px solid #22c55e' : '2px solid #ef4444';
-            }
+            await this.showFeedback(isCorrect, selectedColor);
             
             this.state.currentItemIndex++;
-            
-            if (this.state.currentItemIndex >= this.state.currentStimuli.length) {
-                this.finishCard();
-            }
+            this.showNextStimulus();
         }
         
-        startCardTimer() {
-            this.state.isCardActive = true;
-            this.state.cardStartTime = Date.now();
+        async showFeedback(isCorrect, selectedColor) {
+            const buttons = document.querySelectorAll('.response-btn');
+            const selectedBtn = Array.from(buttons).find(btn => btn.dataset.color === selectedColor);
             
-            this.state.timerInterval = setInterval(() => {
-                const elapsed = ((Date.now() - this.state.cardStartTime) / 1000).toFixed(2);
-                this.ui.timerDisplay.textContent = `${elapsed}s`;
-            }, 10);
+            if (selectedBtn) {
+                selectedBtn.classList.add(isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+                await this.delay(isCorrect ? 300 : 400);
+                selectedBtn.classList.remove('feedback-correct', 'feedback-incorrect');
+            }
+            
+            await this.delay(200);
+        }
+        
+        enableButtons() {
+            document.querySelectorAll('.response-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+        }
+        
+        disableButtons() {
+            document.querySelectorAll('.response-btn').forEach(btn => {
+                btn.disabled = true;
+            });
         }
         
         finishCard() {
@@ -491,18 +555,11 @@
             const cardResult = this.state.results.cards[this.state.currentCardIndex];
             cardResult.time = ((Date.now() - this.state.cardStartTime) / 1000).toFixed(2);
             
-            this.ui.responseButtons.classList.add('hidden');
-            this.ui.timerDisplay.textContent = `Tempo: ${cardResult.time}s | Erros: ${cardResult.errors}`;
-            
             if (this.state.currentCardIndex < this.CARDS.length - 1) {
-                this.ui.nextCardContainer.classList.remove('hidden');
+                setTimeout(() => this.startCard(this.state.currentCardIndex + 1), 1000);
             } else {
-                setTimeout(() => this.endTest(), 2000);
+                setTimeout(() => this.endTest(), 1000);
             }
-        }
-        
-        nextCard() {
-            this.loadCard(this.state.currentCardIndex + 1);
         }
         
         endTest() {
@@ -519,21 +576,21 @@
             let cardHtml = '';
             res.cards.forEach((card, index) => {
                 const cardInfo = this.CARDS[index];
+                const accuracy = card.trials.length > 0 ? ((card.trials.filter(t => t.isCorrect).length / card.trials.length) * 100).toFixed(1) : 0;
+                
                 cardHtml += `
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <h4 class="font-semibold text-white mb-2">${cardInfo.title}</h4>
                         <p class="text-gray-300"><strong>Tempo:</strong> ${card.time}s</p>
-                        <p class="text-gray-300"><strong>Erros:</strong> ${card.errors}</p>
+                        <p class="text-gray-300"><strong>Erros:</strong> ${card.errors}/24</p>
+                        <p class="text-gray-300"><strong>Acurácia:</strong> ${accuracy}%</p>
                     </div>
                 `;
             });
             this.ui.cardResults.innerHTML = cardHtml;
             
             const timeD = parseFloat(res.cards[0]?.time || 0);
-            const timeW = parseFloat(res.cards[1]?.time || 0);
             const timeC = parseFloat(res.cards[2]?.time || 0);
-            const errorC = res.cards[2]?.errors || 0;
-            
             const cOverD = timeD > 0 ? (timeC / timeD).toFixed(2) : 'N/A';
             
             const ageGroup = this.getAgeGroup(this.state.subjectAge);
@@ -556,7 +613,7 @@
             
             this.ui.analysisResults.innerHTML = `
                 <p><strong>Razão C/D:</strong> ${cOverD}</p>
-                <p><strong>Efeito de Interferência:</strong> ${errorC} erros no Cartão 3</p>
+                <p><strong>Efeito de Interferência:</strong> ${res.cards[2]?.errors || 0} erros no Cartão C</p>
                 ${interpretation}
                 <p class="text-xs text-gray-400 mt-3">Faixa etária: ${ageGroup}</p>
             `;
@@ -623,22 +680,25 @@
                 resultados: {
                     cartaoD_Retangulos: {
                         tempo_segundos: res.cards[0]?.time || 0,
-                        erros: res.cards[0]?.errors || 0
+                        erros: res.cards[0]?.errors || 0,
+                        tentativas: res.cards[0]?.trials.length || 0
                     },
                     cartaoW_PalavrasNeutras: {
                         tempo_segundos: res.cards[1]?.time || 0,
-                        erros: res.cards[1]?.errors || 0
+                        erros: res.cards[1]?.errors || 0,
+                        tentativas: res.cards[1]?.trials.length || 0
                     },
-                 cartaoC_Cores: {
+                    cartaoC_Cores: {
                         tempo_segundos: res.cards[2]?.time || 0,
-                        erros: res.cards[2]?.errors || 0
+                        erros: res.cards[2]?.errors || 0,
+                        tentativas: res.cards[2]?.trials.length || 0
                     },
                     razao_C_sobre_D: cOverD
                 },
                 detalhamento: res.cards.map((card, idx) => ({
                     cartao: this.CARDS[idx].id,
                     tipo: this.CARDS[idx].type,
-                    tentativas: card.items
+                    trials: card.trials
                 }))
             };
         }
@@ -647,7 +707,7 @@
             const data = this.getResultsObject();
             let csv = '\uFEFF';
             
-            csv += 'TESTE DE STROOP - VERSAO VICTORIA\n\n';
+            csv += 'TESTE DE STROOP - VERSAO VICTORIA (AUTO-APLICADO)\n\n';
             csv += 'DADOS DO PARTICIPANTE\n';
             csv += 'Campo,Valor\n';
             csv += `Nome,"${data.participante.nome}"\n`;
@@ -656,11 +716,19 @@
             csv += `Data,"${data.participante.dataAvaliacao}"\n\n`;
             
             csv += 'RESULTADOS\n';
-            csv += 'Cartao,Tempo(s),Erros\n';
-            csv += `D - Retangulos,${data.resultados.cartaoD_Retangulos.tempo_segundos},${data.resultados.cartaoD_Retangulos.erros}\n`;
-            csv += `W - Palavras Neutras,${data.resultados.cartaoW_PalavrasNeutras.tempo_segundos},${data.resultados.cartaoW_PalavrasNeutras.erros}\n`;
-            csv += `C - Cores,${data.resultados.cartaoC_Cores.tempo_segundos},${data.resultados.cartaoC_Cores.erros}\n`;
-            csv += `Razao C/D,${data.resultados.razao_C_sobre_D},\n`;
+            csv += 'Cartao,Tempo(s),Erros,Acertos,Total\n';
+            csv += `D - Retangulos,${data.resultados.cartaoD_Retangulos.tempo_segundos},${data.resultados.cartaoD_Retangulos.erros},${data.resultados.cartaoD_Retangulos.tentativas - data.resultados.cartaoD_Retangulos.erros},${data.resultados.cartaoD_Retangulos.tentativas}\n`;
+            csv += `W - Palavras Neutras,${data.resultados.cartaoW_PalavrasNeutras.tempo_segundos},${data.resultados.cartaoW_PalavrasNeutras.erros},${data.resultados.cartaoW_PalavrasNeutras.tentativas - data.resultados.cartaoW_PalavrasNeutras.erros},${data.resultados.cartaoW_PalavrasNeutras.tentativas}\n`;
+            csv += `C - Cores,${data.resultados.cartaoC_Cores.tempo_segundos},${data.resultados.cartaoC_Cores.erros},${data.resultados.cartaoC_Cores.tentativas - data.resultados.cartaoC_Cores.erros},${data.resultados.cartaoC_Cores.tentativas}\n`;
+            csv += `Razao C/D,${data.resultados.razao_C_sobre_D},,,\n\n`;
+            
+            csv += 'DETALHAMENTO POR ITEM\n';
+            csv += 'Cartao,Item,CorCorreta,Resposta,Correto,TempoReacao(ms)\n';
+            data.detalhamento.forEach(card => {
+                card.trials.forEach(trial => {
+                    csv += `${card.cartao},${trial.itemIndex + 1},${trial.correctColor},${trial.userResponse},${trial.isCorrect ? 'Sim' : 'Nao'},${trial.reactionTime}\n`;
+                });
+            });
             
             this.downloadFile(csv, `${filename}.csv`, 'text/csv;charset=utf-8;');
         }
@@ -683,23 +751,31 @@
             
             doc.setFontSize(18);
             doc.text('Teste de Stroop - Versao Victoria', 14, 22);
+            doc.setFontSize(10);
+            doc.text('(Auto-aplicado)', 14, 28);
             
             doc.setFontSize(11);
             doc.setTextColor(100);
-            doc.text(`Participante: ${data.participante.nome}`, 14, 32);
-            doc.text(`Idade: ${data.participante.idade} anos`, 14, 38);
-            doc.text(`Escolaridade: ${data.participante.escolaridade}`, 14, 44);
-            doc.text(`Data: ${data.participante.dataAvaliacao}`, 14, 50);
+            doc.text(`Participante: ${data.participante.nome}`, 14, 36);
+            doc.text(`Idade: ${data.participante.idade} anos`, 14, 42);
+            doc.text(`Escolaridade: ${data.participante.escolaridade}`, 14, 48);
+            doc.text(`Data: ${data.participante.dataAvaliacao}`, 14, 54);
             
             if (typeof doc.autoTable === 'function') {
                 doc.autoTable({
-                    startY: 58,
-                    head: [['Cartao', 'Tempo (s)', 'Erros']],
+                    startY: 62,
+                    head: [['Cartao', 'Tempo (s)', 'Erros', 'Acertos']],
                     body: [
-                        ['D - Retangulos', data.resultados.cartaoD_Retangulos.tempo_segundos, data.resultados.cartaoD_Retangulos.erros],
-                        ['W - Palavras Neutras', data.resultados.cartaoW_PalavrasNeutras.tempo_segundos, data.resultados.cartaoW_PalavrasNeutras.erros],
-                        ['C - Cores', data.resultados.cartaoC_Cores.tempo_segundos, data.resultados.cartaoC_Cores.erros],
-                        ['Razao C/D', data.resultados.razao_C_sobre_D, '-']
+                        ['D - Retangulos', data.resultados.cartaoD_Retangulos.tempo_segundos, 
+                         data.resultados.cartaoD_Retangulos.erros,
+                         data.resultados.cartaoD_Retangulos.tentativas - data.resultados.cartaoD_Retangulos.erros],
+                        ['W - Palavras Neutras', data.resultados.cartaoW_PalavrasNeutras.tempo_segundos,
+                         data.resultados.cartaoW_PalavrasNeutras.erros,
+                         data.resultados.cartaoW_PalavrasNeutras.tentativas - data.resultados.cartaoW_PalavrasNeutras.erros],
+                        ['C - Cores', data.resultados.cartaoC_Cores.tempo_segundos,
+                         data.resultados.cartaoC_Cores.erros,
+                         data.resultados.cartaoC_Cores.tentativas - data.resultados.cartaoC_Cores.erros],
+                        ['Razao C/D', data.resultados.razao_C_sobre_D, '-', '-']
                     ],
                     theme: 'striped',
                     headStyles: { fillColor: [59, 130, 246] }
