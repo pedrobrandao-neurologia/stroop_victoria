@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teste de Stroop Victoria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000;
+            color: #f0f2f5;
+            touch-action: manipulation;
+        }
+        
+        .fixation-cross {
+            font-size: 100px;
+            font-weight: bold;
+            animation: pulse 1s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .stimulus-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .stimulus-item {
+            aspect-ratio: 2/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 2px solid #374151;
+            border-radius: 8px;
+            background-color: #1f2937;
+        }
+        
+        .response-btn {
+            transition: all 0.15s ease;
+            font-weight: 700;
+            font-size: 18px;
+            text-transform: uppercase;
+            border: 3px solid transparent;
+            min-height: 70px;
+        }
+        
+        .response-btn:hover {
+            transform: scale(1.05);
+            border-color: white;
+        }
+        
+        .response-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .instruction-box {
+            background-color: #1f2937;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .timer-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #3b82f6;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 640px) {
+            .stimulus-item {
+                font-size: 20px;
+            }
+            .response-btn {
+                font-size: 16px;
+                min-height: 60px;
+            }
+            .stimulus-grid {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen flex items-center justify-center p-4">
+        
+        <!-- Tela de Configuração -->
+        <div id="config-screen" class="w-full max-w-3xl">
+            <div class="bg-gray-900 rounded-xl shadow-2xl p-6 md:p-8 border border-gray-700">
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-3 text-center">Teste de Stroop</h1>
+                <p class="text-gray-400 mb-6 text-center text-sm md:text-base">Versão Victoria (Perret, 1974)</p>
+                
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Nome do Participante *</label>
+                        <input 
+                            type="text" 
+                            id="subject-name" 
+                            class="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
+                            placeholder="Digite o nome completo"
+                            required>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Idade *</label>
+                            <input 
+                                type="number" 
+                                id="subject-age" 
+                                class="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white"
+                                placeholder="Anos"
+                                min="17"
+                                max="120"
+                                required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Escolaridade *</label>
+                            <select id="education-level" class="w-full px-4 py-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white">
+                                <option value="fundamental">Fundamental</option>
+                                <option value="medio">Médio</option>
+                                <option value="superior">Superior</option>
+                                <option value="pos">Pós-graduação</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 rounded-lg p-4 mb-6">
+                    <h3 class="font-semibold text-white mb-3">Sobre o Teste:</h3>
+                    <p class="text-gray-300 text-sm mb-3">O Teste de Stroop avalia a atenção seletiva, flexibilidade mental e controle inibitório. Consiste em 3 cartões:</p>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-300 text-sm">
+                        <li><strong>Cartão 1 (D):</strong> Nomear cores de retângulos</li>
+                        <li><strong>Cartão 2 (W):</strong> Nomear cores de palavras neutras</li>
+                        <li><strong>Cartão 3 (C):</strong> Nomear cores de palavras de cores (interferência)</li>
+                    </ol>
+                    <p class="text-gray-400 text-xs mt-3">Duração aproximada: 5 minutos</p>
+                </div>
+                
+                <button 
+                    id="start-btn" 
+                    class="w-full bg-blue-600 text-white font-bold py-4 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors text-lg">
+                    Iniciar Teste
+                </button>
+            </div>
+        </div>
+
+        <!-- Tela do Teste -->
+        <div id="test-screen" class="hidden w-full max-w-4xl">
+            <div class="bg-gray-900 rounded-xl p-6 md:p-8 border border-gray-700">
+                
+                <!-- Instrução do Cartão Atual -->
+                <div id="instruction-box" class="instruction-box">
+                    <h2 id="card-title" class="text-2xl font-bold text-white mb-2"></h2>
+                    <p id="card-instruction" class="text-gray-300"></p>
+                </div>
+                
+                <!-- Timer -->
+                <div id="timer-display" class="timer-display"></div>
+                
+                <!-- Grade de Estímulos -->
+                <div id="stimulus-grid" class="stimulus-grid mb-6"></div>
+                
+                <!-- Botões de Resposta -->
+                <div id="response-buttons" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                    <button class="response-btn rounded-lg py-4" data-color="verde" style="background-color: #00FF00; color: black;">Verde</button>
+                    <button class="response-btn rounded-lg py-4" data-color="azul" style="background-color: #0000FF; color: white;">Azul</button>
+                    <button class="response-btn rounded-lg py-4" data-color="rosa" style="background-color: #FFC0CB; color: black;">Rosa</button>
+                    <button class="response-btn rounded-lg py-4" data-color="marrom" style="background-color: #8B4513; color: white;">Marrom</button>
+                </div>
+                
+                <!-- Botão para Próximo Cartão -->
+                <div id="next-card-container" class="hidden mt-6 text-center">
+                    <button id="next-card-btn" class="bg-green-600 text-white font-bold py-4 px-8 rounded-lg hover:bg-green-700 transition-colors text-lg">
+                        Próximo Cartão
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Resultados -->
+        <div id="results-screen" class="hidden w-full max-w-5xl">
+            <div class="bg-gray-900 rounded-xl shadow-2xl p-6 md:p-8 border border-gray-700">
+                <h2 class="text-3xl font-bold text-white mb-2 text-center">Resultados do Teste</h2>
+                <p id="results-subject-info" class="text-center text-gray-400 mb-6"></p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-gray-800 p-5 rounded-lg">
+                        <h3 class="font-bold text-white text-lg mb-4">Desempenho por Cartão</h3>
+                        <div id="card-results" class="space-y-4"></div>
+                    </div>
+                    <div class="bg-gray-800 p-5 rounded-lg">
+                        <h3 class="font-bold text-white text-lg mb-4">Análise e Interpretação</h3>
+                        <div id="analysis-results" class="space-y-3 text-gray-300"></div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-700 pt-6">
+                    <div class="text-center mb-6">
+                        <h3 class="font-bold text-white text-lg mb-3">Exportar Resultados</h3>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <button id="export-csv" class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-semibold transition">CSV</button>
+                            <button id="export-json" class="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 rounded-lg font-semibold transition">JSON</button>
+                            <button id="export-pdf" class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition">PDF</button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button id="restart-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition">
+                            Novo Teste
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    class StroopVictoriaTest {
+        constructor() {
+            // Configurações da Versão Victoria
+            this.COLORS = {
+                verde: { name: 'VERDE', hex: '#00FF00', rgb: [0, 255, 0] },
+                azul: { name: 'AZUL', hex: '#0000FF', rgb: [0, 0, 255] },
+                rosa: { name: 'ROSA', hex: '#FFC0CB', rgb: [255, 192, 203] },
+                marrom: { name: 'MARROM', hex: '#8B4513', rgb: [139, 69, 19] }
+            };
+            
+            this.NEUTRAL_WORDS = ['CADA', 'NUNCA', 'HOJE', 'TUDO'];
+            
+            this.CARDS = [
+                {
+                    id: 'D',
+                    title: 'Cartão 1 - Retângulos (D)',
+                    instruction: 'Nomeie as CORES dos retângulos, da esquerda para direita, o mais rápido possível',
+                    type: 'rectangles',
+                    rows: 6,
+                    cols: 4
+                },
+                {
+                    id: 'W',
+                    title: 'Cartão 2 - Palavras Neutras (W)',
+                    instruction: 'Nomeie as CORES das palavras (ignore o que está escrito), da esquerda para direita',
+                    type: 'neutral-words',
+                    rows: 6,
+                    cols: 4
+                },
+                {
+                    id: 'C',
+                    title: 'Cartão 3 - Cores (C)',
+                    instruction: 'Nomeie as CORES das palavras (ignore o nome da cor escrito), da esquerda para direita',
+                    type: 'color-words',
+                    rows: 6,
+                    cols: 4
+                }
+            ];
+            
+            this.ui = this.getUIElements();
+            this.state = {};
+            this.resetState();
+            this.bindEvents();
+        }
+        
+        getUIElements() {
+            return {
+                configScreen: document.getElementById('config-screen'),
+                testScreen: document.getElementById('test-screen'),
+                resultsScreen: document.getElementById('results-screen'),
+                subjectName: document.getElementById('subject-name'),
+                subjectAge: document.getElementById('subject-age'),
+                educationLevel: document.getElementById('education-level'),
+                startBtn: document.getElementById('start-btn'),
+                instructionBox: document.getElementById('instruction-box'),
+                cardTitle: document.getElementById('card-title'),
+                cardInstruction: document.getElementById('card-instruction'),
+                timerDisplay: document.getElementById('timer-display'),
+                stimulusGrid: document.getElementById('stimulus-grid'),
+                responseButtons: document.getElementById('response-buttons'),
+                nextCardContainer: document.getElementById('next-card-container'),
+                nextCardBtn: document.getElementById('next-card-btn'),
+                cardResults: document.getElementById('card-results'),
+                analysisResults: document.getElementById('analysis-results'),
+                resultsSubjectInfo: document.getElementById('results-subject-info'),
+                restartBtn: document.getElementById('restart-btn'),
+                exportCsv: document.getElementById('export-csv'),
+                exportJson: document.getElementById('export-json'),
+                exportPdf: document.getElementById('export-pdf')
+            };
+        }
+        
+        resetState() {
+            this.state = {
+                subjectName: '',
+                subjectAge: 0,
+                educationLevel: '',
+                currentCardIndex: 0,
+                currentItemIndex: 0,
+                startTime: 0,
+                cardStartTime: 0,
+                isCardActive: false,
+                timerInterval: null,
+                results: {
+                    cards: [],
+                    testDate: new Date().toISOString()
+                }
+            };
+        }
+        
+        bindEvents() {
+            this.ui.startBtn.addEventListener('click', () => this.startTest());
+            this.ui.nextCardBtn.addEventListener('click', () => this.nextCard());
+            this.ui.restartBtn.addEventListener('click', () => this.restart());
+            
+            document.querySelectorAll('.response-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => this.handleResponse(e.target.dataset.color));
+            });
+            
+            this.ui.exportCsv.addEventListener('click', () => this.exportData('csv'));
+            this.ui.exportJson.addEventListener('click', () => this.exportData('json'));
+            this.ui.exportPdf.addEventListener('click', () => this.exportData('pdf'));
+        }
+        
+        startTest() {
+            const name = this.ui.subjectName.value.trim();
+            const age = parseInt(this.ui.subjectAge.value);
+            
+            if (!name || !age || age < 17) {
+                alert('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+            
+            this.resetState();
+            this.state.subjectName = name;
+            this.state.subjectAge = age;
+            this.state.educationLevel = this.ui.educationLevel.value;
+            
+            this.ui.configScreen.classList.add('hidden');
+            this.ui.testScreen.classList.remove('hidden');
+            
+            this.loadCard(0);
+        }
+        
+        loadCard(cardIndex) {
+            if (cardIndex >= this.CARDS.length) {
+                this.endTest();
+                return;
+            }
+            
+            this.state.currentCardIndex = cardIndex;
+            this.state.currentItemIndex = 0;
+            
+            const card = this.CARDS[cardIndex];
+            
+            this.ui.cardTitle.textContent = card.title;
+            this.ui.cardInstruction.textContent = card.instruction;
+            
+            this.generateStimuli(card);
+            
+            this.ui.nextCardContainer.classList.add('hidden');
+            this.ui.responseButtons.classList.remove('hidden');
+            this.ui.timerDisplay.textContent = 'Pressione qualquer cor para iniciar';
+            
+            this.state.cardStartTime = 0;
+            this.state.isCardActive = false;
+            
+            this.state.results.cards.push({
+                cardId: card.id,
+                cardType: card.type,
+                time: 0,
+                errors: 0,
+                items: []
+            });
+        }
+        
+        generateStimuli(card) {
+            this.ui.stimulusGrid.innerHTML = '';
+            const totalItems = card.rows * card.cols;
+            const colorKeys = Object.keys(this.COLORS);
+            
+            const stimuli = [];
+            
+            for (let i = 0; i < totalItems; i++) {
+                const correctColor = colorKeys[i % colorKeys.length];
+                let content = '';
+                let displayColor = this.COLORS[correctColor].hex;
+                let wordColor = null;
+                
+                if (card.type === 'rectangles') {
+                    content = '▮▮▮';
+                } else if (card.type === 'neutral-words') {
+                    content = this.NEUTRAL_WORDS[i % this.NEUTRAL_WORDS.length];
+                } else if (card.type === 'color-words') {
+                    const wordColorKey = colorKeys[(i + Math.floor(i / 4)) % colorKeys.length];
+                    content = this.COLORS[wordColorKey].name;
+                    wordColor = wordColorKey;
+                }
+                
+                stimuli.push({
+                    index: i,
+                    content: content,
+                    correctColor: correctColor,
+                    displayColor: displayColor,
+                    wordColor: wordColor
+                });
+                
+                const item = document.createElement('div');
+                item.className = 'stimulus-item';
+                item.textContent = content;
+                item.style.color = displayColor;
+                item.dataset.index = i;
+                
+                this.ui.stimulusGrid.appendChild(item);
+            }
+            
+            this.state.currentStimuli = stimuli;
+        }
+        
+        handleResponse(selectedColor) {
+            if (!this.state.isCardActive) {
+                this.startCardTimer();
+                return;
+            }
+            
+            if (this.state.currentItemIndex >= this.state.currentStimuli.length) {
+                return;
+            }
+            
+            const currentStimulus = this.state.currentStimuli[this.state.currentItemIndex];
+            const isCorrect = selectedColor === currentStimulus.correctColor;
+            
+            const cardResult = this.state.results.cards[this.state.currentCardIndex];
+            
+            cardResult.items.push({
+                itemIndex: this.state.currentItemIndex,
+                correctColor: currentStimulus.correctColor,
+                userResponse: selectedColor,
+                isCorrect: isCorrect,
+                timestamp: Date.now()
+            });
+            
+            if (!isCorrect) {
+                cardResult.errors++;
+            }
+            
+            const stimulusElement = this.ui.stimulusGrid.children[this.state.currentItemIndex];
+            if (stimulusElement) {
+                stimulusElement.style.opacity = '0.3';
+                stimulusElement.style.border = isCorrect ? '2px solid #22c55e' : '2px solid #ef4444';
+            }
+            
+            this.state.currentItemIndex++;
+            
+            if (this.state.currentItemIndex >= this.state.currentStimuli.length) {
+                this.finishCard();
+            }
+        }
+        
+        startCardTimer() {
+            this.state.isCardActive = true;
+            this.state.cardStartTime = Date.now();
+            
+            this.state.timerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - this.state.cardStartTime) / 1000).toFixed(2);
+                this.ui.timerDisplay.textContent = `${elapsed}s`;
+            }, 10);
+        }
+        
+        finishCard() {
+            clearInterval(this.state.timerInterval);
+            
+            const cardResult = this.state.results.cards[this.state.currentCardIndex];
+            cardResult.time = ((Date.now() - this.state.cardStartTime) / 1000).toFixed(2);
+            
+            this.ui.responseButtons.classList.add('hidden');
+            this.ui.timerDisplay.textContent = `Tempo: ${cardResult.time}s | Erros: ${cardResult.errors}`;
+            
+            if (this.state.currentCardIndex < this.CARDS.length - 1) {
+                this.ui.nextCardContainer.classList.remove('hidden');
+            } else {
+                setTimeout(() => this.endTest(), 2000);
+            }
+        }
+        
+        nextCard() {
+            this.loadCard(this.state.currentCardIndex + 1);
+        }
+        
+        endTest() {
+            this.ui.testScreen.classList.add('hidden');
+            this.displayResults();
+            this.ui.resultsScreen.classList.remove('hidden');
+        }
+        
+        displayResults() {
+            const res = this.state.results;
+            
+            this.ui.resultsSubjectInfo.textContent = `${this.state.subjectName} | Idade: ${this.state.subjectAge} anos | Escolaridade: ${this.state.educationLevel}`;
+            
+            let cardHtml = '';
+            res.cards.forEach((card, index) => {
+                const cardInfo = this.CARDS[index];
+                cardHtml += `
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-semibold text-white mb-2">${cardInfo.title}</h4>
+                        <p class="text-gray-300"><strong>Tempo:</strong> ${card.time}s</p>
+                        <p class="text-gray-300"><strong>Erros:</strong> ${card.errors}</p>
+                    </div>
+                `;
+            });
+            this.ui.cardResults.innerHTML = cardHtml;
+            
+            const timeD = parseFloat(res.cards[0]?.time || 0);
+            const timeW = parseFloat(res.cards[1]?.time || 0);
+            const timeC = parseFloat(res.cards[2]?.time || 0);
+            const errorC = res.cards[2]?.errors || 0;
+            
+            const cOverD = timeD > 0 ? (timeC / timeD).toFixed(2) : 'N/A';
+            
+            const ageGroup = this.getAgeGroup(this.state.subjectAge);
+            const norms = this.getNormativeData(ageGroup);
+            
+            let interpretation = '';
+            if (norms && timeC > 0) {
+                const zScore = ((timeC - norms.C.mean) / norms.C.sd).toFixed(2);
+                interpretation = `<p><strong>Z-Score (Cartão C):</strong> ${zScore}</p>`;
+                interpretation += `<p class="text-sm mt-2">`;
+                if (Math.abs(zScore) <= 1) {
+                    interpretation += 'Desempenho <span class="text-green-400 font-semibold">dentro do esperado</span> para a faixa etária.';
+                } else if (zScore > 1) {
+                    interpretation += 'Desempenho <span class="text-yellow-400 font-semibold">abaixo do esperado</span> (tempo maior).';
+                } else {
+                    interpretation += 'Desempenho <span class="text-blue-400 font-semibold">acima do esperado</span> (tempo menor).';
+                }
+                interpretation += `</p>`;
+            }
+            
+            this.ui.analysisResults.innerHTML = `
+                <p><strong>Razão C/D:</strong> ${cOverD}</p>
+                <p><strong>Efeito de Interferência:</strong> ${errorC} erros no Cartão 3</p>
+                ${interpretation}
+                <p class="text-xs text-gray-400 mt-3">Faixa etária: ${ageGroup}</p>
+            `;
+        }
+        
+        getAgeGroup(age) {
+            if (age >= 17 && age <= 29) return '17-29';
+            if (age >= 30 && age <= 39) return '30-39';
+            if (age >= 40 && age <= 49) return '40-49';
+            if (age >= 50 && age <= 59) return '50-59';
+            if (age >= 60 && age <= 69) return '60-69';
+            if (age >= 70 && age <= 79) return '70-79';
+            return '80+';
+        }
+        
+        getNormativeData(ageGroup) {
+            const norms = {
+                '17-29': { D: {mean: 11.79, sd: 2.79}, W: {mean: 13.46, sd: 3.11}, C: {mean: 21.28, sd: 5.37} },
+                '30-39': { D: {mean: 11.14, sd: 1.68}, W: {mean: 13.81, sd: 2.66}, C: {mean: 25.08, sd: 9.52} },
+                '40-49': { D: {mean: 12.16, sd: 1.96}, W: {mean: 14.82, sd: 2.46}, C: {mean: 27.20, sd: 5.15} },
+                '50-59': { D: {mean: 12.84, sd: 2.43}, W: {mean: 15.96, sd: 2.93}, C: {mean: 28.48, sd: 8.07} },
+                '60-69': { D: {mean: 12.56, sd: 1.89}, W: {mean: 16.16, sd: 3.46}, C: {mean: 31.32, sd: 8.22} },
+                '70-79': { D: {mean: 14.96, sd: 5.10}, W: {mean: 19.11, sd: 5.13}, C: {mean: 39.56, sd: 13.26} },
+                '80+': { D: {mean: 19.31, sd: 4.91}, W: {mean: 23.91, sd: 5.30}, C: {mean: 56.98, sd: 23.70} }
+            };
+            return norms[ageGroup] || null;
+        }
+        
+        exportData(format) {
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            const filename = `Stroop_Victoria_${this.state.subjectName.replace(/\s/g, '_')}_${timestamp}`;
+            
+            try {
+                switch (format) {
+                    case 'csv':
+                        this.exportCSV(filename);
+                        break;
+                    case 'json':
+                        this.exportJSON(filename);
+                        break;
+                    case 'pdf':
+                        this.exportPDF(filename);
+                        break;
+                }
+            } catch (error) {
+                console.error('Erro na exportação:', error);
+                alert(`Erro ao exportar: ${error.message}`);
+            }
+        }
+        
+        getResultsObject() {
+            const res = this.state.results;
+            const timeD = parseFloat(res.cards[0]?.time || 0);
+            const timeC = parseFloat(res.cards[2]?.time || 0);
+            const cOverD = timeD > 0 ? (timeC / timeD).toFixed(2) : 0;
+            
+            return {
+                participante: {
+                    nome: this.state.subjectName,
+                    idade: this.state.subjectAge,
+                    escolaridade: this.state.educationLevel,
+                    dataAvaliacao: new Date(res.testDate).toLocaleString('pt-BR')
+                },
+                resultados: {
+                    cartaoD_Retangulos: {
+                        tempo_segundos: res.cards[0]?.time || 0,
+                        erros: res.cards[0]?.errors || 0
+                    },
+                    cartaoW_PalavrasNeutras: {
+                        tempo_segundos: res.cards[1]?.time || 0,
+                        erros: res.cards[1]?.errors || 0
+                    },
+                 cartaoC_Cores: {
+                        tempo_segundos: res.cards[2]?.time || 0,
+                        erros: res.cards[2]?.errors || 0
+                    },
+                    razao_C_sobre_D: cOverD
+                },
+                detalhamento: res.cards.map((card, idx) => ({
+                    cartao: this.CARDS[idx].id,
+                    tipo: this.CARDS[idx].type,
+                    tentativas: card.items
+                }))
+            };
+        }
+        
+        exportCSV(filename) {
+            const data = this.getResultsObject();
+            let csv = '\uFEFF';
+            
+            csv += 'TESTE DE STROOP - VERSAO VICTORIA\n\n';
+            csv += 'DADOS DO PARTICIPANTE\n';
+            csv += 'Campo,Valor\n';
+            csv += `Nome,"${data.participante.nome}"\n`;
+            csv += `Idade,${data.participante.idade}\n`;
+            csv += `Escolaridade,"${data.participante.escolaridade}"\n`;
+            csv += `Data,"${data.participante.dataAvaliacao}"\n\n`;
+            
+            csv += 'RESULTADOS\n';
+            csv += 'Cartao,Tempo(s),Erros\n';
+            csv += `D - Retangulos,${data.resultados.cartaoD_Retangulos.tempo_segundos},${data.resultados.cartaoD_Retangulos.erros}\n`;
+            csv += `W - Palavras Neutras,${data.resultados.cartaoW_PalavrasNeutras.tempo_segundos},${data.resultados.cartaoW_PalavrasNeutras.erros}\n`;
+            csv += `C - Cores,${data.resultados.cartaoC_Cores.tempo_segundos},${data.resultados.cartaoC_Cores.erros}\n`;
+            csv += `Razao C/D,${data.resultados.razao_C_sobre_D},\n`;
+            
+            this.downloadFile(csv, `${filename}.csv`, 'text/csv;charset=utf-8;');
+        }
+        
+        exportJSON(filename) {
+            const data = this.getResultsObject();
+            const json = JSON.stringify(data, null, 2);
+            this.downloadFile(json, `${filename}.json`, 'application/json');
+        }
+        
+        exportPDF(filename) {
+            if (typeof window.jspdf === 'undefined') {
+                alert('Biblioteca PDF não carregada.');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const data = this.getResultsObject();
+            
+            doc.setFontSize(18);
+            doc.text('Teste de Stroop - Versao Victoria', 14, 22);
+            
+            doc.setFontSize(11);
+            doc.setTextColor(100);
+            doc.text(`Participante: ${data.participante.nome}`, 14, 32);
+            doc.text(`Idade: ${data.participante.idade} anos`, 14, 38);
+            doc.text(`Escolaridade: ${data.participante.escolaridade}`, 14, 44);
+            doc.text(`Data: ${data.participante.dataAvaliacao}`, 14, 50);
+            
+            if (typeof doc.autoTable === 'function') {
+                doc.autoTable({
+                    startY: 58,
+                    head: [['Cartao', 'Tempo (s)', 'Erros']],
+                    body: [
+                        ['D - Retangulos', data.resultados.cartaoD_Retangulos.tempo_segundos, data.resultados.cartaoD_Retangulos.erros],
+                        ['W - Palavras Neutras', data.resultados.cartaoW_PalavrasNeutras.tempo_segundos, data.resultados.cartaoW_PalavrasNeutras.erros],
+                        ['C - Cores', data.resultados.cartaoC_Cores.tempo_segundos, data.resultados.cartaoC_Cores.erros],
+                        ['Razao C/D', data.resultados.razao_C_sobre_D, '-']
+                    ],
+                    theme: 'striped',
+                    headStyles: { fillColor: [59, 130, 246] }
+                });
+            }
+            
+            doc.save(`${filename}.pdf`);
+        }
+        
+        downloadFile(content, fileName, contentType) {
+            const a = document.createElement('a');
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(a.href);
+            }, 100);
+        }
+        
+        restart() {
+            this.resetState();
+            this.ui.resultsScreen.classList.add('hidden');
+            this.ui.configScreen.classList.remove('hidden');
+            this.ui.subjectName.focus();
+        }
+        
+        delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        new StroopVictoriaTest();
+    });
+    </script>
+</body>
+</html>
